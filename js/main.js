@@ -74,10 +74,11 @@ class GameOverScreen {
     }
 }
 
-class Hearts {
+class HUD {
     constructor(posX, posY, amount) {
         this.x = posX;
         this.y = posY;
+
         this.amount = amount;
         this.score = 0;
 
@@ -89,7 +90,7 @@ class Hearts {
 
     draw() {
         for (var i = 0; i < this.amount; i++) {
-            context.drawImage(this.heartImage, this.x + i * 30, this.y, 20, 15);
+            context.drawImage(this.heartImage, this.x + i * 40, this.y, 30, 22);
         }
 
         context.font = "30px 'Bungee Shade'";
@@ -99,10 +100,43 @@ class Hearts {
     }
 }
 
+class Asteroid {
+    constructor(posX, posY) {
+        this.x = posX;
+        this.y = posY;
+
+        this.enabled = true;
+
+        this.image = new Image();
+        this.image.src = "resources/images/asteroids.png";
+
+        this.imageId = Math.floor(Math.random() * 5);
+
+        if (Math.random() > .9) {
+            this.z = 10;
+            this.multiplier = Math.random() * 1 + 1.5;
+        } else {
+            this.z = -10;
+            this.multiplier = Math.random() * .5 + .5;
+        }
+    }
+
+    update() {
+        this.x -= 3 * this.multiplier;
+    }
+
+    draw() {
+        const dx = (this.imageId % 2) * 128;
+        const dy = (this.imageId % 2) * 128;
+        context.drawImage(this.image, dx, dy, 128, 128, this.x, this.y, 40 * this.multiplier, 40 * this.multiplier);
+    }
+}
+
 class Enemy {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
+        this.z = 0;
 
         this.enabled = true;
 
@@ -158,6 +192,7 @@ class Projectile {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
+        this.z = 0;
         this.enabled = true;
 
         this.projectileImage = new Image();
@@ -191,6 +226,7 @@ class Player {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
+        this.z = 0;
 
         this.shuttleImage = new Image();
         this.shuttleImage.src = "resources/images/shuttle.png";
@@ -344,7 +380,7 @@ function draw() {
     if (globalContext.state == "starting") {
         drawables = [];
         drawables.push(new Player(100, settings.height / 2));
-        hearts = new Hearts(50, settings.height - 50, 5);
+        hearts = new HUD(50, settings.height - 50, 5);
 
         globalContext.state = "running";
 
@@ -371,12 +407,28 @@ function draw() {
 }
 
 function drawDrawables() {
+    drawables = drawables.filter((d) => {
+        if (!d.enabled) {
+            return false;
+        }
+
+        if (d.x < -settings.width || d.x > settings.width ||
+            d.y < - settings.height || d.y > settings.height)
+        {
+            return false;
+        }
+
+        return true;
+    });
+    drawables.sort((dr1, dr2) => dr1.z - dr2.z);
+
     drawables.forEach((drawable) => {
         drawable.update();
     });
 
     drawables.forEach((c1) => {
         drawables.forEach((c2) => {
+            if (!c1.getBoundingRect || !c2.getBoundingRect) return;
             if (!c1.enabled || !c2.enabled) return;
 
             if (c1.getBoundingRect().collides(c2.getBoundingRect())) {
@@ -395,6 +447,10 @@ function drawDrawables() {
 
     if (Math.random() > .99) {
         drawables.push(new Enemy(settings.width, Math.random() * (settings.height - 100)  + 50));
+    }
+
+    if (Math.random() > 0.9) {
+        drawables.push(new Asteroid(settings.width, Math.random() * (settings.height - 100)  + 50));
     }
 
     hearts.draw();
