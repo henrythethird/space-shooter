@@ -17,6 +17,7 @@ const settings = {
 
 var arr = [];
 var globalContext = {
+    state: "title_start",
     keys: {},
     keydown(event) { /* console.log(event); */globalContext.keys[String(event.keyCode)] = true },
     keyup(event) { globalContext.keys[String(event.keyCode)] = false },
@@ -41,11 +42,44 @@ class BoundingRect {
     }
 }
 
+
+class TitleScreen {
+    constructor() {
+    }
+
+    draw() {
+        context.font = "50px 'Press Start 2P'";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.fillText("Throbbleshotter!", settings.width / 2, settings.height / 2);
+
+        context.font = "30px 'Press Start 2P'";
+        context.fillText("Press [Enter] to Start :-)", settings.width / 2, settings.height / 2 + 100);
+    }
+}
+
+class GameOverScreen {
+    constructor() {
+    }
+
+    draw() {
+        context.font = "50px 'Press Start 2P'";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.fillText("Game Over, Bro!", settings.width / 2, settings.height / 2);
+
+        context.font = "30px 'Press Start 2P'";
+        context.fillText("Score: " + hearts.score, settings.width / 2, settings.height / 2 + 100);
+
+    }
+}
+
 class Hearts {
     constructor(posX, posY, amount) {
         this.x = posX;
         this.y = posY;
         this.amount = amount;
+        this.score = 0;
 
         this.heartImage = new Image();
         this.heartImage.src = "resources/images/heart.png";
@@ -57,6 +91,11 @@ class Hearts {
         for (var i = 0; i < this.amount; i++) {
             context.drawImage(this.heartImage, this.x + i * 30, this.y, 20, 15);
         }
+
+        context.font = "30px 'Bungee Shade'";
+        context.fillStyle = "white";
+        context.textAlign = "right";
+        context.fillText(this.score, settings.width - 50, 50);
     }
 }
 
@@ -72,11 +111,19 @@ class Enemy {
         this.spaceshipImage = new Image();
         this.spaceshipImage.src = "resources/images/enemy" + index + ".png";
 
+        this.explosionSound = new Audio("resources/sound/explode.ogg");
+
         this.health = 2;
     }
 
     update() {
         this.x -= settings.speed;
+    }
+
+    kill() {
+        hearts.score += 10;
+        this.enabled = false;
+        this.explosionSound.play();
     }
 
     onCollide(other) {
@@ -85,8 +132,12 @@ class Enemy {
             this.health--;
 
             if (this.health <= 0) {
-                this.enabled = false;
+                this.kill();
             }
+        }
+
+        if (other instanceof Player) {
+            this.kill();
         }
     }
 
@@ -113,6 +164,7 @@ class Projectile {
         this.projectileImage.src = "resources/images/projectile.png";
 
         this.soundEffect = new Audio("resources/sound/projectile.ogg");
+        this.soundEffect.volume = 0.3;
         this.soundEffect.play();
     }
 
@@ -142,6 +194,8 @@ class Player {
 
         this.shuttleImage = new Image();
         this.shuttleImage.src = "resources/images/shuttle.png";
+
+        this.ouchSound = new Audio("resources/sound/ouch.ogg");
 
         this.shotCooldown = 0;
         this.invulnerabilityCooldown = 0;
@@ -193,6 +247,20 @@ class Player {
         hearts.amount = this.health;
     }
 
+    ouch() {
+        if (this.invulnerabilityCooldown > 0) {
+            return;
+        }
+
+        this.ouchSound.play();
+        this.health--;
+        this.invulnerabilityCooldown = 120;
+
+        if (this.health < 0) {
+            this.enabled = false;
+        }
+    }
+
     onCollide(other) {
         if (!other.enabled) {
             return;
@@ -200,15 +268,8 @@ class Player {
 
         if (other instanceof Enemy) {
             other.enabled = false;
-            
-            if (this.invulnerabilityCooldown < 0) {
-                this.health--;
-                this.invulnerabilityCooldown = 120;
-            }
 
-            if (this.health < 0) {
-                this.enabled = false;
-            }
+            this.ouch();
         }
     }
 
@@ -217,13 +278,26 @@ class Player {
             return;
         }
 
+        if (this.invulnerabilityCooldown > 0) {
+            context.globalAlpha = 0.5;
+        }
         context.drawImage(this.shuttleImage, this.x, this.y, 100, 100);
+        context.globalAlpha = 1;
     }
 
     getBoundingRect() {
         return new BoundingRect(this.x, this.y, 100, 100);
     }
 }
+
+const screens = {
+    gameover: new GameOverScreen(),
+    title: new TitleScreen()
+}
+
+const audio = new Audio;
+audio.loop = true;
+audio.volume = 0.3;
 
 /**
  * Initialize the elements
@@ -233,22 +307,70 @@ function init() {
 
     window.addEventListener('keydown', globalContext.keydown);
     window.addEventListener('keyup', globalContext.keyup);
-
-    drawables.push(new Player(100, settings.height / 2));
-    hearts = new Hearts(50, settings.height - 50, 5);
-
-    const backgroundAudio = new Audio("resources/music/background.mp3");
-    backgroundAudio.loop = true;
-    backgroundAudio.volume = 0.1;
-    setTimeout(function() {
-        backgroundAudio.play();
-    }, 50);
 }
 
 /**
  * Draw stuff on the screen
  */
 function draw() {
+    if (globalContext.state == "running") {
+        drawDrawables();
+    } else {
+        context.clearRect(0, 0, settings.width, settings.height);
+    }
+
+    if (globalContext.isPressed(27)) {
+        globalContext.state = "title_start";
+    }
+
+    if (globalContext.state == "title_start") {
+        audio.pause();
+        audio.src = "resources/music/title.ogg";
+        setTimeout(() => { audio.play() }, 10);
+
+        drawables = [];
+
+        globalContext.state = "title";
+    }
+
+    if (globalContext.state == "title") {
+        screens.title.draw();
+
+        if (globalContext.isPressed(13)) {
+            globalContext.state = "starting";
+        }
+    }
+
+    if (globalContext.state == "starting") {
+        drawables = [];
+        drawables.push(new Player(100, settings.height / 2));
+        hearts = new Hearts(50, settings.height - 50, 5);
+
+        globalContext.state = "running";
+
+        audio.pause();
+        audio.src = "resources/music/background.mp3";
+        audio.play();
+    }
+
+    if (globalContext.state == "gameover_start") {
+        audio.pause();
+        audio.src = "resources/music/game_over.mp3";
+        audio.play();
+
+        globalContext.state = "gameover";
+    }
+
+    if (globalContext.state == "gameover") {
+        screens.gameover.draw();
+
+        if (globalContext.isPressed(13)) {
+            globalContext.state = "title_start";
+        }
+    }
+}
+
+function drawDrawables() {
     drawables.forEach((drawable) => {
         drawable.update();
     });
@@ -266,21 +388,21 @@ function draw() {
 
     context.clearRect(0, 0, settings.width, settings.height);
 
-    if (Math.random() > .99) {
-        drawables.push(new Enemy(settings.width, Math.random() * (settings.height - 100)  + 50));
-    }
-
     drawables.forEach((drawable) => {
         drawable.draw();
     });
 
-    hearts.draw();
-    
-    if (hearts.amount <= 0) {
-        alert("game over bro");
-        window.location.reload();
 
-        drawables = [];
+    if (Math.random() > .99) {
+        drawables.push(new Enemy(settings.width, Math.random() * (settings.height - 100)  + 50));
+    }
+
+    hearts.draw();
+
+    if (hearts.amount <= 0) {
+        const audio = new Audio("resources/sound/game_over.ogg");
+        audio.play();
+        globalContext.state = "gameover_start";
     }
 }
 
