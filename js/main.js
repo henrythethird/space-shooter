@@ -8,10 +8,11 @@
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 const settings = {
-    width: 800,
-    height: 600,
+    width: canvas.width,
+    height: canvas.height,
     refreshRate: 16/* ms */,
     speed: 2,
+    projectileSpeed: 5,
 };
 
 var arr = [];
@@ -22,6 +23,25 @@ var globalContext = {
     isPressed(keyCode) { return globalContext.keys[String(keyCode)] }
 };
 var drawables = [];
+
+class Enemy {
+    constructor(posX, posY) {
+        this.x = posX;
+        this.y = posY;
+
+        const index = Math.floor(Math.random() * 5) + 1;
+        this.spaceshipImage = new Image();
+        this.spaceshipImage.src = "resources/images/enemy" + index + ".png";
+    }
+
+    update() {
+        this.x -= settings.speed / 2;
+    }
+
+    draw() {
+        context.drawImage(this.spaceshipImage, this.x, this.y, 75, 50);
+    }
+}
 
 class Projectile {
     constructor(posX, posY) {
@@ -36,7 +56,7 @@ class Projectile {
     }
 
     update() {
-        this.x += 5;
+        this.x += settings.projectileSpeed;
     }
 
     draw() {
@@ -89,11 +109,11 @@ function init() {
     window.addEventListener('keydown', globalContext.keydown);
     window.addEventListener('keyup', globalContext.keyup);
 
-    drawables.push(new Player(settings.width / 2, settings.height / 2));
+    drawables.push(new Player(100, settings.height / 2));
 
     const backgroundAudio = new Audio("resources/music/background.mp3");
     backgroundAudio.loop = true;
-    backgroundAudio.volume = 0.2;
+    backgroundAudio.volume = 0.1;
     setTimeout(function() {
         backgroundAudio.play();
     }, 50);
@@ -108,6 +128,10 @@ function draw() {
     });
 
     context.clearRect(0, 0, settings.width, settings.height);
+
+    if (Math.random() > .99) {
+        drawables.push(new Enemy(settings.width, Math.random() * settings.height));
+    }
 
     drawables.forEach((drawable) => {
         drawable.draw();
