@@ -14,6 +14,9 @@ const settings = {
     speed: 2,
 };
 
+var shuttleImage = new Image();
+shuttleImage.src = "resources/images/shuttle.png";
+
 var arr = [];
 var globalContext = {
     keys: {},
@@ -50,8 +53,7 @@ function draw() {
     // Up
     if (globalContext.isPressed(38)) { y -= settings.speed; }
 
-    context.fillStyle = '#ff00ff';
-    context.fillRect(x, y, 200, 200);
+    context.drawImage(shuttleImage, x, y, 100, 100);
 }
 
 init();
