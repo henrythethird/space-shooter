@@ -83,6 +83,12 @@ class Player {
 
             this.ouch();
         }
+
+        if (other instanceof Healthpack){
+            other.enabled = false;
+
+            this.health++;
+        }
     }
 
     draw() {
