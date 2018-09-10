@@ -18,6 +18,9 @@ class GameOverScreen {
 
         context.font = "30px 'Press Start 2P'";
         context.fillText("Score: " + hearts.score, settings.width / 2, settings.height / 2 + 100);
+
+        context.fillStyle = "gold";
+        context.fillText("Press [ESC] to reset", settings.width / 2, settings.height / 2 + 150);
     }
 
     stop() {
