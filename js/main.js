@@ -2,7 +2,6 @@
  * Main.js
  */
 
-
 var drawables = [];
 var hearts;
 
