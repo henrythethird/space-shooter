@@ -8,7 +8,12 @@ const ENTITY_STAR = "star";
 
 const spawner = {
     reset() {
-        drawables = [];
+        drawables = drawables.filter((d) => {
+            if (d instanceof Asteroid) return true;
+            if (d instanceof Star) return true;
+
+            return false;
+        })
     },
     spawn(name, x, y) {
         var entity = null;
