@@ -6,6 +6,7 @@ const IMAGE_ENEMY4 = "enemy4";
 const IMAGE_ENEMY5 = "enemy5";
 const IMAGE_EXPLOSION = "explosion";
 const IMAGE_HEALTHPACK = "healthpack";
+const IMAGE_POWERUP = "powerup";
 const IMAGE_HEART = "heart";
 const IMAGE_PROJECTILE = "projectile";
 const IMAGE_SHUTTLE = "shuttle";
@@ -52,7 +53,7 @@ const resources = {
             IMAGE_ENEMY4, IMAGE_ENEMY5,
             IMAGE_ASTEROIDS, IMAGE_EXPLOSION, 
             IMAGE_HEALTHPACK, IMAGE_HEART, 
-            IMAGE_SHUTTLE,
+            IMAGE_POWERUP, IMAGE_SHUTTLE,
             IMAGE_PROJECTILE
         ];
 

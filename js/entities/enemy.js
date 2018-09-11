@@ -40,8 +40,14 @@ class Enemy {
     }
 
     drop() {
-        if (Math.random() < 0.05) {
-            drawables.push(new Healthpack(this.x + 40, this.y + 40));
+        if (Math.random() < .05) {
+            spawner.spawn(ENTITY_HEALTHPACK, this.x + 40, this.y + 40);
+            return;
+        }
+
+        if (Math.random() < .025) {
+            spawner.spawn(ENTITY_POWERUP, this.x + 40, this.y + 40);
+            return;
         }
     }
 

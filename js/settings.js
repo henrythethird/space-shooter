@@ -16,5 +16,13 @@ const settings = {
     },
     projectile: {
         speed: 10,
+    },
+    weapon: {
+        single: {
+            cooldown: 10,
+        },
+        double: {
+            cooldown: 15,
+        }
     }
 };

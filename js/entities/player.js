@@ -10,11 +10,12 @@ class Player {
         this.shuttleImage = resources.getImage(IMAGE_SHUTTLE);
         this.ouchSound = resources.getAudio(SOUND_OUCH);
 
-        this.shotCooldown = 0;
         this.invulnerabilityCooldown = 0;
 
         this.health = 5;
         this.enabled = true;
+
+        this.weapon = new SingleShot(this);
     }
 
     keyboardMove() {
@@ -30,12 +31,11 @@ class Player {
     }
 
     keyboardShoot() {
-        if (this.shotCooldown > 0) return;
-        if (!keyboard.isPressed(KEY_SPACE)) return;
-        
-        this.shotCooldown = settings.player.shotCD;
-            
-        spawner.spawn(ENTITY_PROJECTILE, this.x + this.w, this.y + this.h / 2);
+        this.weapon.update();
+
+        if (keyboard.isPressed(KEY_SPACE)) {
+            this.weapon.shoot();
+        }
     }
 
     update() {
@@ -43,7 +43,6 @@ class Player {
             return;
         }
 
-        this.shotCooldown -= 1;
         this.invulnerabilityCooldown -= 1;
 
         this.keyboardMove();

@@ -1,5 +1,5 @@
-class Healthpack {
-    constructor(posX, posY) {
+class Upgrade {
+    constructor(posX, posY, image, effectCB) {
         this.x = posX;
         this.y = posY;
         this.z = 0;
@@ -9,7 +9,8 @@ class Healthpack {
 
         this.enabled = true;
 
-        this.image = resources.getImage(IMAGE_HEALTHPACK);
+        this.image = image;
+        this.effectCB = effectCB;
     }
     
     update() {
@@ -37,10 +38,6 @@ class Healthpack {
             return;
         }
 
-        if (other instanceof Player) {
-            this.enabled = false;
-
-            other.health++;
-        }
+        this.effectCB(this, other);
     }
 }
