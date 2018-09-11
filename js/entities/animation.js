@@ -1,5 +1,5 @@
 class Animation {
-    constructor(posX, posY, w, h, image, frameX, frameY, cb) {
+    constructor(posX, posY, w, h, image, frameX, frameY, frameSkip, cb) {
         this.x = posX;
         this.y = posY;
         this.width = w;
@@ -11,7 +11,8 @@ class Animation {
         this.frameX = frameX;
         this.frameY = frameY;
 
-        this.frameSkip = 0;
+        this.frame = 0;
+        this.frameSkip = frameSkip;
         this.frameId = 0;
 
         this.updateCallback = cb;
@@ -22,16 +23,21 @@ class Animation {
     update() {
         this.updateCallback(this);    
 
-        if (this.frameSkip % 5 == 0) {
+        if (this.frame % this.frameSkip == 0) {
             this.frameId++;
         }
     }
 
     draw() {
-        const fw = 900 / this.frameX;
+        const fw = this.image.width / this.frameX;
 
         const offsetY = Math.floor(this.frameId / fw) * this.frameY;
         const offsetX = (this.frameId % fw) * this.frameX;
+
+        if (offsetY >= this.image.height) {
+            this.enabled = false;
+            return;
+        }
 
         context.drawImage(
             this.image, 

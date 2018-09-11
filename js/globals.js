@@ -20,6 +20,19 @@ const globalContext = {
     clear() { context.clearRect(0, 0, settings.width, settings.height); }
 };
 
+const animations = {
+    create(name, x, y) {
+        switch (name) {
+        case "explosion":
+            drawables.push(new Animation(
+                x, y, 100, 100, 
+                "resources/images/explosion.png", 
+                100, 100, 5, (anim) => { anim.x -= settings.speed }
+            ));
+        }
+    }
+}
+
 window.addEventListener('keydown', globalContext.keydown);
 window.addEventListener('keyup', globalContext.keyup);
 

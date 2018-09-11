@@ -25,11 +25,7 @@ class Enemy {
         this.enabled = false;
         this.explosionSound.play();
 
-        drawables.push(new Animation(
-            this.x, this.y, 100, 100, 
-            "resources/images/explosion.png", 
-            100, 100, (anim) => { anim.x -= settings.speed }
-        ))
+        animations.create("explosion", this.x, this.y);
     }
 
     drop() {
