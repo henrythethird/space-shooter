@@ -22,12 +22,12 @@ class MainScreen extends Screen {
         // Reset the boss if it got killed
         this.boss = null;
 
-        if (Math.random() > .98) {
+        if (Math.random() > .985) {
             spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
             return;
         }
 
-        if (Math.random() > .999) {
+        if (Math.random() > .9995) {
             this.boss = spawner.spawn(ENTITY_BOSS, settings.width, 100);
         }
     }
@@ -80,5 +80,11 @@ class MainScreen extends Screen {
 
             screens.transition(screens.gameover);
         }
+    }
+
+    stop() {
+        super.stop();
+        
+        this.boss = null;
     }
 }
