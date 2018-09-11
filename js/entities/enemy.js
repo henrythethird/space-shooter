@@ -12,7 +12,7 @@ class Enemy {
 
         const index = Math.floor(Math.random() * 5) + 1;
 
-        this.spaceshipImage = resources.getImage("enemy" + index);
+        this.image = resources.getImage("enemy" + index);
         this.explosionSound = resources.getAudio(SOUND_EXPLODE);
 
         this.health = settings.enemy.health;
@@ -62,7 +62,7 @@ class Enemy {
         }
 
         context.drawImage(
-            this.spaceshipImage, this.x, this.y, this.w, this.h
+            this.image, this.x, this.y, this.w, this.h
         );
     }
 
