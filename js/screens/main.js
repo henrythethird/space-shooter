@@ -48,6 +48,7 @@ class MainScreen {
     updateCollisions() {
         drawables.forEach((c1) => {
             drawables.forEach((c2) => {
+                if (c1 == c2) return;
                 if (!c1.getBoundingRect || !c2.getBoundingRect) return;
                 if (!c1.enabled || !c2.enabled) return;
 

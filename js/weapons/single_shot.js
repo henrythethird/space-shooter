@@ -11,11 +11,11 @@ class SingleShot {
     shoot() {
         if (this.shotCooldown > 0) return;
 
-        this.shotCooldown = settings.player.shotCD;
+        this.shotCooldown = settings.weapon.single.cooldown;
 
         spawner.spawn(
             ENTITY_PROJECTILE, 
-            this.parent.x + this.parent.w, 
+            this.parent.x + this.parent.w + 1, 
             this.parent.y + this.parent.h / 2
         );
     }

@@ -2,7 +2,7 @@ class Enemy {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
-        this.z = 0;
+        this.z = -1;
 
         this.w = 75;
         this.h = 50;
@@ -51,11 +51,7 @@ class Enemy {
         }
     }
 
-    onCollide(other) {
-        if (other instanceof Player) {
-            this.kill();
-        }
-    }
+    onCollide() {}
 
     draw() {
         if (!this.enabled) {

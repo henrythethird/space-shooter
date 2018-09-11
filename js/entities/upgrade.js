@@ -18,9 +18,7 @@ class Upgrade {
     }
 
     draw() {
-        if (!this.enabled) {
-            return;
-        }
+        if (!this.enabled) return;
 
         context.drawImage(
             this.image, this.x, this.y, this.w, this.h
@@ -33,11 +31,10 @@ class Upgrade {
         );
     }
 
-    onCollide(other) {
-        if (!other.enabled){
-            return;
-        }
+    onCollide(player) {
+        if (!player.enabled) return;
+        if (!(player instanceof Player)) return;
 
-        this.effectCB(this, other);
+        this.effectCB(this, player);
     }
 }

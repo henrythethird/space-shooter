@@ -27,16 +27,12 @@ const spawner = {
             break;
         case ENTITY_HEALTHPACK:
             entity = new Upgrade(x, y, resources.getImage(IMAGE_HEALTHPACK), (powerup, player) => {
-                if (!(player instanceof Player)) return;
-
                 player.health++;
                 powerup.enabled = false;
             });
             break;
         case ENTITY_POWERUP:
             entity = new Upgrade(x, y, resources.getImage(IMAGE_POWERUP), (powerup, player) => {
-                if (!(player instanceof Player)) return;
-
                 player.weapon = new DoubleShot(player);
                 powerup.enabled = false;
             })

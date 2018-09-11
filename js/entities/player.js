@@ -74,10 +74,6 @@ class Player {
     }
 
     onCollide(other) {
-        if (!other.enabled) {
-            return;
-        }
-
         if (other instanceof Enemy) {
             other.enabled = false;
 

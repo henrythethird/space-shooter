@@ -15,13 +15,13 @@ class DoubleShot {
 
         spawner.spawn(
             ENTITY_PROJECTILE, 
-            this.parent.x + this.parent.w, 
+            this.parent.x + this.parent.w + 1, 
             this.parent.y + this.parent.h / 2 - 5
         );
 
         spawner.spawn(
             ENTITY_PROJECTILE, 
-            this.parent.x + this.parent.w, 
+            this.parent.x + this.parent.w + 1, 
             this.parent.y + this.parent.h / 2 + 5
         );
     }
