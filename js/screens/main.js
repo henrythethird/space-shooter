@@ -1,6 +1,7 @@
 class MainScreen extends Screen {
     constructor() {
         super(resources.getAudio(MUSIC_BACKGROUND))
+        this.boss = null;
     }
 
     start() {
@@ -13,8 +14,21 @@ class MainScreen extends Screen {
     spawn() {
         super.spawn();
 
-        if (Math.random() > .99) {
+        // If there is alread a boss spawned, stop spawning minions
+        if (this.boss && this.boss.enabled) {
+            return;
+        }
+
+        // Reset the boss if it got killed
+        this.boss = null;
+
+        if (Math.random() > .98) {
             spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
+            return;
+        }
+
+        if (Math.random() > .999) {
+            this.boss = spawner.spawn(ENTITY_BOSS, settings.width, 100);
         }
     }
 

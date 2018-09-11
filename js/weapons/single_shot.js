@@ -13,10 +13,10 @@ class SingleShot {
 
         this.shotCooldown = settings.weapon.single.cooldown;
 
-        spawner.spawn(
-            ENTITY_PROJECTILE, 
-            this.parent.x + this.parent.w + 1, 
-            this.parent.y + this.parent.h / 2
-        );
+        const mount = this.parent.getWeaponMount();
+
+        spawner
+            .spawn(ENTITY_PROJECTILE, mount.x, mount.y)
+            .direction = mount.direction;
     }
 }

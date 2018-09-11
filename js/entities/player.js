@@ -59,13 +59,13 @@ class Player {
         return this.invulnerabilityCooldown > 0
     }
 
-    ouch() {
+    damage(hp) {
         if (this.isInvulnerable()) {
             return;
         }
 
+        this.health -= hp;
         this.ouchSound.play();
-        this.health--;
         this.invulnerabilityCooldown = settings.player.invulnCD;
 
         if (this.health < 0) {
@@ -74,11 +74,16 @@ class Player {
     }
 
     onCollide(other) {
+        if (other instanceof Boss) {
+            this.damage(1);
+            return;
+        }
+        
         if (other instanceof Enemy) {
-            other.health = 0;
+            other.damage(2);
             other.enableDrops = false;
 
-            this.ouch();
+            this.damage(1);
         }
     }
 
@@ -96,5 +101,9 @@ class Player {
 
     getBoundingRect() {
         return new BoundingRect(this.x, this.y, this.w, this.h);
+    }
+
+    getWeaponMount() {
+        return new WeaponMount(this.x + this.w + 1, this.y + this.h / 2, 1);
     }
 }

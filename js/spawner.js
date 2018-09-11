@@ -5,6 +5,7 @@ const ENTITY_ASTEROID = "asteroid";
 const ENTITY_HEALTHPACK = "healthpack";
 const ENTITY_POWERUP = "powerup";
 const ENTITY_STAR = "star";
+const ENTITY_BOSS = "boss";
 
 const spawner = {
     reset() {
@@ -36,6 +37,9 @@ const spawner = {
         case ENTITY_ENEMY:
             entity = new Enemy(x, y);
             break;
+        case ENTITY_BOSS:
+            entity = new Boss(x, y);
+            break;
         case ENTITY_PLAYER:
             entity = new Player(x, y);
             break;
@@ -57,5 +61,7 @@ const spawner = {
         if (!entity) return;
 
         drawables.push(entity);
+
+        return entity;
     }
 }

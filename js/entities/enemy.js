@@ -7,6 +7,8 @@ class Enemy {
         this.w = 75;
         this.h = 50;
 
+        this.score = settings.enemy.score;
+
         this.enabled = true;
         this.enableDrops = true;
 
@@ -20,15 +22,10 @@ class Enemy {
 
     update() {
         this.x -= settings.enemy.speed;
-
-        if (this.health <= 0) {
-            this.kill();
-            this.drop();
-        }
     }
 
     kill() {
-        hud.score += settings.enemy.score;
+        hud.score += this.score;
         this.enabled = false;
         this.explosionSound.play();
 
@@ -38,6 +35,15 @@ class Enemy {
                 anim.x -= settings.enemy.speed;
             }
         );
+    }
+
+    damage(hp) {
+        this.health -= hp;
+
+        if (this.health <= 0) {
+            this.kill();
+            this.drop();
+        }
     }
 
     drop() {

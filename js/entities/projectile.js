@@ -13,17 +13,22 @@ class Projectile {
         this.soundEffect = resources.getAudio(SOUND_PROJECTILE);
         this.soundEffect.volume = 0.3;
         this.soundEffect.play();
+
+        this.direction = 1;
+        this.evil = false;
     }
 
     onCollide(other) {
-        if (other instanceof Enemy) {
+        if ((!this.evil && other instanceof Enemy)
+         || (this.evil && other instanceof Player)) 
+        {
             this.enabled = false;
-            other.health--;
+            other.damage(1);
         }
     }
 
     update() {
-        this.x += settings.projectile.speed;
+        this.x += settings.projectile.speed * this.direction;
     }
 
     draw() {
