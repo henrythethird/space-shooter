@@ -3,12 +3,14 @@ class Projectile {
         this.x = posX;
         this.y = posY;
         this.z = 0;
+        this.w = 20;
+        this.h = 10;
+
         this.enabled = true;
 
-        this.projectileImage = new Image();
-        this.projectileImage.src = "resources/images/projectile.png";
+        this.image = resources.getImage(IMAGE_PROJECTILE);
 
-        this.soundEffect = new Audio("resources/sound/projectile.ogg");
+        this.soundEffect = resources.getAudio(SOUND_PROJECTILE);
         this.soundEffect.volume = 0.3;
         this.soundEffect.play();
     }
@@ -16,7 +18,7 @@ class Projectile {
     onCollide() {}
 
     update() {
-        this.x += settings.projectileSpeed;
+        this.x += settings.projectile.speed;
     }
 
     draw() {
@@ -24,10 +26,12 @@ class Projectile {
             return;
         }
 
-        context.drawImage(this.projectileImage, this.x, this.y, 20, 10);
+        context.drawImage(
+            this.image, this.x, this.y, this.w, this.h
+        );
     }
 
     getBoundingRect() {
-        return new BoundingRect(this.x, this.y, 20, 10);
+        return new BoundingRect(this.x, this.y, this.w, this.h);
     }
 }

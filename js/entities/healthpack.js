@@ -2,15 +2,18 @@ class Healthpack {
     constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
+        this.z = 0;
+
+        this.w = 35;
+        this.h = 35;
 
         this.enabled = true;
 
-        this.image = new Image();
-        this.image.src = "resources/images/healthpack.png";
+        this.image = resources.getImage(IMAGE_HEALTHPACK);
     }
     
     update() {
-        this.x -= settings.speed;
+        this.x -= settings.enemy.speed;
     }
 
     draw() {
@@ -18,11 +21,15 @@ class Healthpack {
             return;
         }
 
-        context.drawImage(this.image, this.x, this.y, 35, 35);
+        context.drawImage(
+            this.image, this.x, this.y, this.w, this.h
+        );
     }
 
     getBoundingRect() {
-        return new BoundingRect(this.x, this.y, 35, 35);
+        return new BoundingRect(
+            this.x, this.y, this.w, this.h
+        );
     }
 
     onCollide(other) {

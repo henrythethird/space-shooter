@@ -4,33 +4,39 @@ class Enemy {
         this.y = posY;
         this.z = 0;
 
+        this.w = 75;
+        this.h = 50;
+
         this.enabled = true;
 
         const index = Math.floor(Math.random() * 5) + 1;
 
-        this.spaceshipImage = new Image();
-        this.spaceshipImage.src = "resources/images/enemy" + index + ".png";
+        this.spaceshipImage = resources.getImage("enemy" + index);
+        this.explosionSound = resources.getAudio(SOUND_EXPLODE);
 
-        this.explosionSound = new Audio("resources/sound/explode.ogg");
-
-        this.health = 2;
+        this.health = settings.enemy.health;
     }
 
     update() {
-        this.x -= settings.speed;
+        this.x -= settings.enemy.speed;
     }
 
     kill() {
-        hearts.score += 10;
+        hud.score += settings.enemy.score;
         this.enabled = false;
         this.explosionSound.play();
 
-        animations.create("explosion", this.x, this.y);
+        animations.create(
+            ANIMATION_EXPLOSION, this.x, this.y, 
+            (anim) => {
+                anim.x -= settings.enemy.speed;
+            }
+        );
     }
 
     drop() {
-        if (Math.random() < .05) {
-            drawables.push(new Healthpack(this.x, this.y));
+        if (Math.random() < 0.05) {
+            drawables.push(new Healthpack(this.x + 40, this.y + 40));
         }
     }
 
@@ -41,7 +47,6 @@ class Enemy {
 
             if (this.health <= 0) {
                 this.kill();
-                
                 this.drop();
             }
         }
@@ -56,10 +61,12 @@ class Enemy {
             return;
         }
 
-        context.drawImage(this.spaceshipImage, this.x, this.y, 75, 50);
+        context.drawImage(
+            this.spaceshipImage, this.x, this.y, this.w, this.h
+        );
     }
 
     getBoundingRect() {
-        return new BoundingRect(this.x, this.y, 75, 50);
+        return new BoundingRect(this.x, this.y, this.w, this.h);
     }
 }

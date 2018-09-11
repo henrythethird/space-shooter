@@ -1,18 +1,33 @@
 class MainScreen {
     constructor() {
-        this.audio = new Audio("resources/music/background.mp3");
+        this.audio = resources.getAudio(MUSIC_BACKGROUND);
         this.audio.loop = true;
     }
 
     start() {
-        drawables = [];
-        drawables.push(new Player(100, settings.height / 2));
-        hearts = new HUD(50, settings.height - 50, 5);
+        spawner.reset();
+        spawner.spawn(ENTITY_PLAYER, 100, settings.height / 2);
+
+        hud = new HUD(50, settings.height - 50, 5);
 
         this.audio.play();
     }
 
-    run() {
+    spawn() {
+        if (Math.random() > .99) {
+            spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
+        }
+
+        if (Math.random() > .9) {
+            spawner.spawn(ENTITY_ASTEROID, settings.width, Math.random() * (settings.height - 100)  + 50);
+        }
+    }
+
+    /**
+     * Filters entities that are disabled or have gone off screen
+     * Afterwards they get sorted according to their Z-Coordinates
+     */
+    updateDrawables() {
         drawables = drawables.filter((d) => {
             if (!d.enabled) {
                 return false;
@@ -26,8 +41,11 @@ class MainScreen {
 
             return true;
         });
-        drawables.sort((dr1, dr2) => dr1.z - dr2.z);
 
+        drawables.sort((dr1, dr2) => dr1.z - dr2.z);
+    }
+
+    updateCollisions() {
         drawables.forEach((c1) => {
             drawables.forEach((c2) => {
                 if (!c1.getBoundingRect || !c2.getBoundingRect) return;
@@ -39,30 +57,27 @@ class MainScreen {
                 }
             })
         });
+    }
+
+    run() {
+        this.updateDrawables();
+        this.updateCollisions();
 
         drawables.forEach((drawable) => {
             drawable.update();
         });
 
-        globalContext.clear();
+        drawer.clear();
 
         drawables.forEach((drawable) => {
             drawable.draw();
         });
 
+        this.spawn();
+        hud.draw();
 
-        if (Math.random() > .99) {
-            drawables.push(new Enemy(settings.width, Math.random() * (settings.height - 100)  + 50));
-        }
-
-        if (Math.random() > 0.9) {
-            drawables.push(new Asteroid(settings.width, Math.random() * (settings.height - 100)  + 50));
-        }
-
-        hearts.draw();
-
-        if (hearts.amount <= 0) {
-            const audio = new Audio("resources/sound/game_over.ogg");
+        if (hud.amount <= 0) {
+            const audio = resources.getAudio(SOUND_GAME_OVER);
             audio.play();
 
             screens.transition(screens.gameover);

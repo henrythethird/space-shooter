@@ -2,11 +2,12 @@ class Animation {
     constructor(posX, posY, w, h, image, frameX, frameY, frameSkip, cb) {
         this.x = posX;
         this.y = posY;
+        this.z = -10;
+
         this.width = w;
         this.height = h;
 
-        this.image = new Image();
-        this.image.src = image;
+        this.image = image;
 
         this.frameX = frameX;
         this.frameY = frameY;

@@ -4,16 +4,38 @@ class Player {
         this.y = posY;
         this.z = 0;
 
-        this.shuttleImage = new Image();
-        this.shuttleImage.src = "resources/images/shuttle.png";
+        this.w = 100;
+        this.h = 50;
 
-        this.ouchSound = new Audio("resources/sound/ouch.ogg");
+        this.shuttleImage = resources.getImage(IMAGE_SHUTTLE);
+        this.ouchSound = resources.getAudio(SOUND_OUCH);
 
         this.shotCooldown = 0;
         this.invulnerabilityCooldown = 0;
 
         this.health = 5;
         this.enabled = true;
+    }
+
+    keyboardMove() {
+        if (keyboard.isPressed(KEY_LEFT)) this.x -= settings.player.speed;
+        if (keyboard.isPressed(KEY_RIGHT)) this.x += settings.player.speed;
+        if (keyboard.isPressed(KEY_DOWN)) this.y += settings.player.speed;
+        if (keyboard.isPressed(KEY_UP)) this.y -= settings.player.speed;
+
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.w > settings.width) this.x = settings.width - this.w;
+        if (this.y < 0) this.y = 0;
+        if (this.y + this.h > settings.height) this.y = settings.height - this.h;
+    }
+
+    keyboardShoot() {
+        if (this.shotCooldown > 0) return;
+        if (!keyboard.isPressed(KEY_SPACE)) return;
+        
+        this.shotCooldown = settings.player.shotCD;
+            
+        spawner.spawn(ENTITY_PROJECTILE, this.x + this.w, this.y + this.h / 2);
     }
 
     update() {
@@ -24,53 +46,28 @@ class Player {
         this.shotCooldown -= 1;
         this.invulnerabilityCooldown -= 1;
 
-        // Left
-        if (globalContext.isPressed(37)) { this.x -= settings.speed; }
-        // Right
-        if (globalContext.isPressed(39)) { this.x += settings.speed; }
-        // Down
-        if (globalContext.isPressed(40)) { this.y += settings.speed; }
-        // Up
-        if (globalContext.isPressed(38)) { this.y -= settings.speed; }
+        this.keyboardMove();
+        this.keyboardShoot();
 
-        if (this.x < 0) {
-            this.x = 0;
+        if (this.health > settings.player.maxHealth){
+            this.health = settings.player.maxHealth;
         }
 
-        if (this.x + 100 > settings.width) {
-            this.x = settings.width - 100;
-        }
+        hud.amount = this.health;
+    }
 
-        if (this.y < 0) {
-            this.y = 0;
-        }
-
-        if (this.y + 50 > settings.height) {
-            this.y = settings.height - 50;
-        }
-
-        // Space bar -> shoot
-        if (globalContext.isPressed(32) && this.shotCooldown <= 0) { 
-            this.shotCooldown = 10;
-            
-            drawables.push(new Projectile(this.x + 100, this.y + 25))
-        }
-
-        if (this.health > 5){
-            this.health = 5;
-        }
-
-        hearts.amount = this.health;
+    isInvulnerable() {
+        return this.invulnerabilityCooldown > 0
     }
 
     ouch() {
-        if (this.invulnerabilityCooldown > 0) {
+        if (this.isInvulnerable()) {
             return;
         }
 
         this.ouchSound.play();
         this.health--;
-        this.invulnerabilityCooldown = 120;
+        this.invulnerabilityCooldown = settings.player.invulnCD;
 
         if (this.health < 0) {
             this.enabled = false;
@@ -94,14 +91,14 @@ class Player {
             return;
         }
 
-        if (this.invulnerabilityCooldown > 0) {
+        if (this.isInvulnerable()) {
             context.globalAlpha = 0.5;
         }
-        context.drawImage(this.shuttleImage, this.x, this.y, 100, 50);
+        context.drawImage(this.shuttleImage, this.x, this.y, this.w, this.h);
         context.globalAlpha = 1;
     }
 
     getBoundingRect() {
-        return new BoundingRect(this.x, this.y, 100, 50);
+        return new BoundingRect(this.x, this.y, this.w, this.h);
     }
 }

@@ -5,8 +5,7 @@ class Asteroid {
 
         this.enabled = true;
 
-        this.image = new Image();
-        this.image.src = "resources/images/asteroids.png";
+        this.image = resources.getImage(IMAGE_ASTEROIDS);
 
         this.imageId = Math.floor(Math.random() * 4);
 

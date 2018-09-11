@@ -3,7 +3,7 @@
  */
 
 var drawables = [];
-var hearts;
+var hud;
 
 const screens = {
     gameover: new GameOverScreen(),
@@ -12,19 +12,19 @@ const screens = {
 
     current: null,
 
-    transition(other) {
+    transition(newScreen) {
         if (screens.current) {
             screens.current.stop();
         }
 
-        screens.current = other;
+        screens.current = newScreen;
         screens.current.start();
     }
 }
 
 const audio = new Audio;
 audio.loop = true;
-audio.volume = 0.3;
+audio.volume = settings.volume;
 
 /**
  * Initialize the elements
@@ -40,10 +40,13 @@ function draw() {
     if (screens.current) {
         screens.current.run();
     } else {
+        // If there's no active screen
+        // Switch to the title screen
+
         screens.transition(screens.title);
     }
 
-    if (globalContext.isPressed(27)) {
+    if (keyboard.isPressed(KEY_ESC)) {
         screens.transition(screens.title);
     }
 }

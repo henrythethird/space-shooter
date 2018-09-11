@@ -1,6 +1,6 @@
 class GameOverScreen {
     constructor() {
-        this.audio = new Audio("resources/music/game_over.mp3");
+        this.audio = resources.getAudio(MUSIC_GAME_OVER);
         this.audio.loop = true;
     }
 
@@ -9,18 +9,21 @@ class GameOverScreen {
     }
 
     run() {
-        globalContext.clear();
+        drawer.clear();
 
-        context.font = "50px 'Press Start 2P'";
-        context.fillStyle = "white";
-        context.textAlign = "center";
-        context.fillText("Game Over, Bro!", settings.width / 2, settings.height / 2);
+        drawer.drawText(
+            "Game Over, Bro!", settings.width / 2, settings.height / 2,
+            FONT_GAMEARCADE, "50px"
+        );
 
-        context.font = "30px 'Press Start 2P'";
-        context.fillText("Score: " + hearts.score, settings.width / 2, settings.height / 2 + 100);
-
-        context.fillStyle = "gold";
-        context.fillText("Press [ESC] to reset", settings.width / 2, settings.height / 2 + 150);
+        drawer.drawText(
+            "Score: " + hud.score, settings.width / 2, settings.height / 2 + 100
+        );
+        
+        drawer.drawText(
+            "Press [ESC] to reset", settings.width / 2, settings.height / 2 + 150,
+            FONT_GAMEARCADE, "30px", "gold"
+        );
     }
 
     stop() {

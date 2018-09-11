@@ -1,6 +1,6 @@
 class TitleScreen {
     constructor() {
-        this.audio = new Audio("resources/music/title.ogg");
+        this.audio = resources.getAudio(MUSIC_TITLE);
         this.audio.loop = true;
     }
 
@@ -11,18 +11,19 @@ class TitleScreen {
     }
 
     run() {
-        globalContext.clear();
+        drawer.clear();
 
-        context.font = "50px 'Press Start 2P'";
-        context.fillStyle = "white";
-        context.textAlign = "center";
-        context.fillText("Throbbleshotter!", settings.width / 2, settings.height / 2);
+        drawer.drawText(
+            "Throbbleshotter!", settings.width / 2, settings.height / 2,
+            FONT_GAMEARCADE, "50px"
+        );
 
-        context.font = "30px 'Press Start 2P'";
-        context.fillStyle = "gold";
-        context.fillText("Press [Enter] to Start", settings.width / 2, settings.height / 2 + 100);
+        drawer.drawText(
+            "Press [Space] to Start", settings.width / 2, settings.height / 2 + 100,
+            FONT_GAMEARCADE, "30px", "gold"
+        );
 
-        if (globalContext.isPressed(13)) {
+        if (keyboard.isPressed(KEY_SPACE)) {
             screens.transition(screens.main);
         }
     }
