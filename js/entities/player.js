@@ -49,7 +49,7 @@ class Player {
             this.y = settings.height - 100;
         }
 
-
+        // Space bar -> shoot
         if (globalContext.isPressed(32) && this.shotCooldown <= 0) { 
             this.shotCooldown = 10;
             
@@ -82,12 +82,6 @@ class Player {
             other.enabled = false;
 
             this.ouch();
-        }
-
-        if (other instanceof Healthpack){
-            other.enabled = false;
-
-            this.health++;
         }
     }
 

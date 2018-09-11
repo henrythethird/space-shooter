@@ -26,6 +26,12 @@ class Enemy {
         this.explosionSound.play();
     }
 
+    drop() {
+        if (Math.random() < .05) {
+            drawables.push(new Healthpack(this.x, this.y));
+        }
+    }
+
     onCollide(other) {
         if (other instanceof Projectile) {
             other.enabled = false;
@@ -33,6 +39,8 @@ class Enemy {
 
             if (this.health <= 0) {
                 this.kill();
+                
+                this.drop();
             }
         }
 

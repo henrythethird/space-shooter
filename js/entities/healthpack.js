@@ -1,5 +1,5 @@
 class Healthpack {
-    construtor(posX, posY) {
+    constructor(posX, posY) {
         this.x = posX;
         this.y = posY;
 
@@ -7,7 +7,6 @@ class Healthpack {
 
         this.image = new Image();
         this.image.src = "resources/images/healthpack.png";
-
     }
     
     update() {
@@ -19,10 +18,22 @@ class Healthpack {
             return;
         }
 
-        context.drawImage(this.image, this.x, this.x, 35, 35);
+        context.drawImage(this.image, this.x, this.y, 35, 35);
     }
 
     getBoundingRect() {
         return new BoundingRect(this.x, this.y, 35, 35);
+    }
+
+    onCollide(other) {
+        if (!other.enabled){
+            return;
+        }
+
+        if (other instanceof Player) {
+            this.enabled = false;
+
+            other.health++;
+        }
     }
 }
