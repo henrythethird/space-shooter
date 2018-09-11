@@ -1,7 +1,7 @@
 class HUD {
-    constructor(posX, posY, amount) {
-        this.x = posX;
-        this.y = posY;
+    constructor(x, y, amount) {
+        this.x = x;
+        this.y = y;
 
         this.amount = amount;
         this.score = 0;

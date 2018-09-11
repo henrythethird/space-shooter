@@ -1,7 +1,7 @@
 class Animation {
-    constructor(posX, posY, w, h, image, frameX, frameY, frameSkip, cb) {
-        this.x = posX;
-        this.y = posY;
+    constructor(x, y, w, h, image, frameX, frameY, frameSkip, cb) {
+        this.x = x;
+        this.y = y;
         this.z = -10;
 
         this.width = w;

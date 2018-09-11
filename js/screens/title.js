@@ -1,17 +1,10 @@
-class TitleScreen {
+class TitleScreen extends Screen {
     constructor() {
-        this.audio = resources.getAudio(MUSIC_TITLE);
-        this.audio.loop = true;
-    }
-
-    start() {
-        drawables = [];
-
-        this.audio.play();
+        super(resources.getAudio(MUSIC_TITLE));
     }
 
     run() {
-        drawer.clear();
+        super.run();
 
         drawer.drawText(
             "Throbbleshotter!", settings.width / 2, settings.height / 2,
@@ -26,9 +19,5 @@ class TitleScreen {
         if (keyboard.isPressed(KEY_SPACE)) {
             screens.transition(screens.main);
         }
-    }
-
-    stop() {
-        this.audio.pause();
     }
 }

@@ -4,6 +4,7 @@ const ENTITY_PLAYER = "player";
 const ENTITY_ASTEROID = "asteroid";
 const ENTITY_HEALTHPACK = "healthpack";
 const ENTITY_POWERUP = "powerup";
+const ENTITY_STAR = "star";
 
 const spawner = {
     reset() {
@@ -13,18 +14,28 @@ const spawner = {
         var entity = null;
 
         switch (name) {
+        // Environment
+        case ENTITY_ASTEROID:
+            entity = new Asteroid(x, y);
+            break;
+        case ENTITY_STAR:
+            entity = new Star(x, y);
+            break;
+
+        // Weapons
         case ENTITY_PROJECTILE:
             entity = new Projectile(x, y);
             break;
+
+        // Characters
         case ENTITY_ENEMY:
             entity = new Enemy(x, y);
-            break;
-        case ENTITY_ASTEROID:
-            entity = new Asteroid(x, y);
             break;
         case ENTITY_PLAYER:
             entity = new Player(x, y);
             break;
+
+        // Powerups
         case ENTITY_HEALTHPACK:
             entity = new Upgrade(x, y, resources.getImage(IMAGE_HEALTHPACK), (powerup, player) => {
                 player.health++;

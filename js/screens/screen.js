@@ -1,20 +1,21 @@
-class MainScreen extends Screen {
-    constructor() {
-        super(resources.getAudio(MUSIC_BACKGROUND))
+class Screen {
+    constructor(audio) {
+        this.audio = audio;
+        this.audio.loop = true;
     }
 
     start() {
-        super.start();
-
-        spawner.spawn(ENTITY_PLAYER, 100, settings.height / 2);
-        hud = new HUD(50, settings.height - 50, 5);
+        spawner.reset();
+        this.audio.play();
     }
 
     spawn() {
-        super.spawn();
+        if (Math.random() > .95) {
+            spawner.spawn(ENTITY_ASTEROID, settings.width, Math.random() * (settings.height - 100)  + 50);
+        }
 
-        if (Math.random() > .99) {
-            spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
+        if (Math.random() > .8) {
+            spawner.spawn(ENTITY_STAR, settings.width, Math.random() * settings.height);
         }
     }
 
@@ -56,15 +57,23 @@ class MainScreen extends Screen {
     }
 
     run() {
-        super.run();
+        this.updateDrawables();
+        this.updateCollisions();
 
-        hud.draw();
+        drawables.forEach((drawable) => {
+            drawable.update();
+        });
 
-        if (hud.amount <= 0) {
-            const audio = resources.getAudio(SOUND_GAME_OVER);
-            audio.play();
+        drawer.clear();
 
-            screens.transition(screens.gameover);
-        }
+        drawables.forEach((drawable) => {
+            drawable.draw();
+        });
+
+        this.spawn();
+    }
+
+    stop() {
+        this.audio.pause();
     }
 }

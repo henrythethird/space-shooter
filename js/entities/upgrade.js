@@ -1,7 +1,7 @@
 class Upgrade {
-    constructor(posX, posY, image, effectCB) {
-        this.x = posX;
-        this.y = posY;
+    constructor(x, y, image, effectCB) {
+        this.x = x;
+        this.y = y;
         this.z = 0;
 
         this.w = 35;

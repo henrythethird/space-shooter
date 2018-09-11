@@ -1,7 +1,7 @@
 class Player {
-    constructor(posX, posY) {
-        this.x = posX;
-        this.y = posY;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
         this.z = 0;
 
         this.w = 100;

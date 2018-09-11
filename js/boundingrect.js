@@ -1,7 +1,7 @@
 class BoundingRect {
-    constructor(posX, posY, width, height) {
-        this.x = posX;
-        this.y = posY;
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
     }
