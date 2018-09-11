@@ -15,7 +15,12 @@ class Projectile {
         this.soundEffect.play();
     }
 
-    onCollide() {}
+    onCollide(other) {
+        if (other instanceof Enemy) {
+            this.enabled = false;
+            other.health--;
+        }
+    }
 
     update() {
         this.x += settings.projectile.speed;

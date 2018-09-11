@@ -19,6 +19,11 @@ class Enemy {
 
     update() {
         this.x -= settings.enemy.speed;
+
+        if (this.health <= 0) {
+            this.kill();
+            this.drop();
+        }
     }
 
     kill() {
@@ -41,16 +46,6 @@ class Enemy {
     }
 
     onCollide(other) {
-        if (other instanceof Projectile) {
-            other.enabled = false;
-            this.health--;
-
-            if (this.health <= 0) {
-                this.kill();
-                this.drop();
-            }
-        }
-
         if (other instanceof Player) {
             this.kill();
         }
