@@ -28,10 +28,6 @@ class MainScreen {
         });
         drawables.sort((dr1, dr2) => dr1.z - dr2.z);
 
-        drawables.forEach((drawable) => {
-            drawable.update();
-        });
-
         drawables.forEach((c1) => {
             drawables.forEach((c2) => {
                 if (!c1.getBoundingRect || !c2.getBoundingRect) return;
@@ -42,7 +38,11 @@ class MainScreen {
                     c2.onCollide(c1);
                 }
             })
-        })
+        });
+
+        drawables.forEach((drawable) => {
+            drawable.update();
+        });
 
         globalContext.clear();
 

@@ -56,6 +56,10 @@ class Player {
             drawables.push(new Projectile(this.x + 100, this.y + 45))
         }
 
+        if (this.health > 5){
+            this.health = 5;
+        }
+
         hearts.amount = this.health;
     }
 
