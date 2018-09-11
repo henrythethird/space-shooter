@@ -8,6 +8,7 @@ class Enemy {
         this.h = 50;
 
         this.enabled = true;
+        this.enableDrops = true;
 
         const index = Math.floor(Math.random() * 5) + 1;
 
@@ -40,6 +41,8 @@ class Enemy {
     }
 
     drop() {
+        if (!this.enableDrops) return;
+
         if (Math.random() < .05) {
             spawner.spawn(ENTITY_HEALTHPACK, this.x + 40, this.y + 40);
             return;

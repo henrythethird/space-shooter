@@ -75,7 +75,8 @@ class Player {
 
     onCollide(other) {
         if (other instanceof Enemy) {
-            other.enabled = false;
+            other.health = 0;
+            other.enableDrops = false;
 
             this.ouch();
         }
