@@ -45,15 +45,15 @@ class Player {
             this.y = 0;
         }
 
-        if (this.y + 100 > settings.height) {
-            this.y = settings.height - 100;
+        if (this.y + 50 > settings.height) {
+            this.y = settings.height - 50;
         }
 
         // Space bar -> shoot
         if (globalContext.isPressed(32) && this.shotCooldown <= 0) { 
             this.shotCooldown = 10;
             
-            drawables.push(new Projectile(this.x + 100, this.y + 45))
+            drawables.push(new Projectile(this.x + 100, this.y + 25))
         }
 
         if (this.health > 5){
@@ -97,11 +97,11 @@ class Player {
         if (this.invulnerabilityCooldown > 0) {
             context.globalAlpha = 0.5;
         }
-        context.drawImage(this.shuttleImage, this.x, this.y, 100, 100);
+        context.drawImage(this.shuttleImage, this.x, this.y, 100, 50);
         context.globalAlpha = 1;
     }
 
     getBoundingRect() {
-        return new BoundingRect(this.x, this.y, 100, 100);
+        return new BoundingRect(this.x, this.y, 100, 50);
     }
 }
