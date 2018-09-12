@@ -6,8 +6,7 @@ class MainScreen extends Screen {
         this.bossMusic = resources.getAudio(MUSIC_BOSS_BATTLE);
 
         this.paused = false;
-        this.textbox = new Textbox(300, 400);
-    
+        this.textbox = new Textbox(100, 400);
     }
 
     start() {
