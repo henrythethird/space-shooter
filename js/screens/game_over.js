@@ -19,5 +19,9 @@ class GameOverScreen extends Screen {
             "Press [ESC] to reset", settings.width / 2, settings.height / 2 + 150,
             FONT_GAMEARCADE, "30px", "gold"
         );
+
+        if (keyboard.isPressed(KEY_ESC)) {
+            screens.transition(screens.title);
+        }
     }
 }

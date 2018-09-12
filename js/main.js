@@ -39,16 +39,12 @@ function init() {
 function draw() {
     if (screens.current) {
         screens.current.run();
-    } else {
-        // If there's no active screen
-        // Switch to the title screen
-
-        screens.transition(screens.title);
+        return
     }
 
-    if (keyboard.isPressed(KEY_ESC)) {
-        screens.transition(screens.title);
-    }
+    // If there's no active screen
+    // Switch to the title screen
+    screens.transition(screens.title);
 }
 
 init();

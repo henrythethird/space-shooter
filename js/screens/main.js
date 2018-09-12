@@ -4,6 +4,8 @@ class MainScreen extends Screen {
 
         this.boss = null;
         this.bossMusic = resources.getAudio(MUSIC_BOSS_BATTLE);
+
+        this.paused = false;
     }
 
     start() {
@@ -33,51 +35,22 @@ class MainScreen extends Screen {
             return;
         }
 
-        if (Math.random() > .9995) {
+        if (hud.score == 500) {
             this.boss = spawner.spawn(ENTITY_BOSS, settings.width, 100);
             this.bossMusic.play();
             this.audio.pause();
         }
     }
 
-    /**
-     * Filters entities that are disabled or have gone off screen
-     * Afterwards they get sorted according to their Z-Coordinates
-     */
-    updateDrawables() {
-        drawables = drawables.filter((d) => {
-            if (!d.enabled) {
-                return false;
-            }
-
-            if (d.x < -settings.width || d.x > settings.width ||
-                d.y < - settings.height || d.y > settings.height)
-            {
-                return false;
-            }
-
-            return true;
-        });
-
-        drawables.sort((dr1, dr2) => dr1.z - dr2.z);
-    }
-
-    updateCollisions() {
-        drawables.forEach((c1) => {
-            drawables.forEach((c2) => {
-                if (c1 == c2) return;
-                if (!c1.getBoundingRect || !c2.getBoundingRect) return;
-                if (!c1.enabled || !c2.enabled) return;
-
-                if (c1.getBoundingRect().collides(c2.getBoundingRect())) {
-                    c1.onCollide(c2);
-                    c2.onCollide(c1);
-                }
-            })
-        });
-    }
-
     run() {
+        if (this.paused) {
+            if (keyboard.isPressed(KEY_SPACE)) {
+                this.paused = false;
+            }
+
+            return;
+        }
+
         super.run();
 
         hud.draw();
@@ -87,6 +60,20 @@ class MainScreen extends Screen {
             audio.play();
 
             screens.transition(screens.gameover);
+        }
+
+        if (keyboard.isPressed(KEY_ESC)) {
+            drawer.drawText(
+                "Paused", settings.width / 2, settings.height / 2,
+                FONT_GAMEARCADE, "50px"
+            );
+
+            drawer.drawText(
+                "Press [Space] to Continue", settings.width / 2, settings.height / 2 + 100,
+                FONT_GAMEARCADE, "30px", "gold"
+            );
+
+            this.paused = true;
         }
     }
 
