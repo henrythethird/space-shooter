@@ -20,6 +20,7 @@ const SOUND_PROJECTILE = "projectile.ogg";
 const MUSIC_BACKGROUND = "background.mp3";
 const MUSIC_GAME_OVER = "game_over.mp3";
 const MUSIC_TITLE = "title.ogg";
+const MUSIC_BOSS_BATTLE = "boss_battle.ogg";
 
 const resources = {
     images: {},
@@ -41,7 +42,8 @@ const resources = {
         const music = [
             MUSIC_BACKGROUND,
             MUSIC_GAME_OVER,
-            MUSIC_TITLE
+            MUSIC_TITLE,
+            MUSIC_BOSS_BATTLE
         ];
 
         music.forEach((m) => {

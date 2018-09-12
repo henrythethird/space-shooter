@@ -1,7 +1,9 @@
 class MainScreen extends Screen {
     constructor() {
-        super(resources.getAudio(MUSIC_BACKGROUND))
+        super(resources.getAudio(MUSIC_BACKGROUND));
+
         this.boss = null;
+        this.bossMusic = resources.getAudio(MUSIC_BOSS_BATTLE);
     }
 
     start() {
@@ -19,8 +21,12 @@ class MainScreen extends Screen {
             return;
         }
 
-        // Reset the boss if it got killed
-        this.boss = null;
+        if (this.boss) {
+            // Reset the boss if it got killed
+            this.bossMusic.pause();
+            this.boss = null;
+            this.audio.play();
+        }
 
         if (Math.random() > .985) {
             spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
@@ -29,6 +35,8 @@ class MainScreen extends Screen {
 
         if (Math.random() > .9995) {
             this.boss = spawner.spawn(ENTITY_BOSS, settings.width, 100);
+            this.bossMusic.play();
+            this.audio.pause();
         }
     }
 
@@ -86,5 +94,6 @@ class MainScreen extends Screen {
         super.stop();
         
         this.boss = null;
+        this.bossMusic.pause();
     }
 }
