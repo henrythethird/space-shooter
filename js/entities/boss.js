@@ -10,7 +10,17 @@ class Boss extends Enemy {
         this.health = 200;
         this.score = 2000;
 
-        this.weapon = new DoubleShot(this, true);
+        this.weaponMounts = {
+            top: new WeaponMount(0, 0, -1),
+            bottom: new WeaponMount(0, 0, -1),
+            center: new WeaponMount(0, 0, -1)
+        }
+
+        this.weapons = [
+            new SingleShot(this, this.weaponMounts.top),
+            new DoubleShot(this, this.weaponMounts.center),
+            new SingleShot(this, this.weaponMounts.bottom)
+        ];
 
         this.image = resources.getImage(IMAGE_BOSS)
 
@@ -18,7 +28,10 @@ class Boss extends Enemy {
     }
 
     update() {
-        this.weapon.update();
+        this.updateWeaponMount();
+        this.weapons.forEach((weapon) => {
+            weapon.update();
+        })
         
         if (this.specialAttack) {
             if (this.x > settings.width * .3) {
@@ -40,7 +53,7 @@ class Boss extends Enemy {
             if (this.x > settings.width * .7) {
                 this.vel.x = -2;
 
-                if (Math.random() > 0.9) {
+                if (Math.random() > 0.5) {
                     this.specialAttack = true;
                 }
             }
@@ -49,14 +62,25 @@ class Boss extends Enemy {
                 this.vel.x = 2;
             }
 
-            this.weapon.shoot();
+            if (this.vel.y < 0) {
+                this.weapons.forEach((weapon) => {
+                    weapon.shoot();
+                })
+            }
         }
 
         this.y += this.vel.y;
         this.x += this.vel.x;
     }
 
-    getWeaponMount() {
-        return new WeaponMount(this.x - 1, this.y + this.h / 2, -1);
+    updateWeaponMount() {
+        this.weaponMounts.top.x = this.x - 1;
+        this.weaponMounts.top.y = this.y + this.h / 5;
+
+        this.weaponMounts.center.x = this.x - 1;
+        this.weaponMounts.center.y = this.y + this.h / 2;
+
+        this.weaponMounts.bottom.x = this.x - 1;
+        this.weaponMounts.bottom.y = this.y + 4 * this.h / 5;
     }
 }

@@ -14,8 +14,11 @@ class Player {
 
         this.health = 5;
         this.enabled = true;
+        this.evil = false;
 
-        this.weapon = new SingleShot(this);
+        this.weaponMount = new WeaponMount(0, 0, 1);
+
+        this.weapon = new SingleShot(this, this.weaponMount);
     }
 
     keyboardMove() {
@@ -46,6 +49,7 @@ class Player {
         this.invulnerabilityCooldown -= 1;
 
         this.keyboardMove();
+        this.updateWeaponMount();
         this.keyboardShoot();
 
         if (this.health > settings.player.maxHealth){
@@ -103,7 +107,8 @@ class Player {
         return new BoundingRect(this.x, this.y, this.w, this.h);
     }
 
-    getWeaponMount() {
-        return new WeaponMount(this.x + this.w + 1, this.y + this.h / 2, 1);
+    updateWeaponMount() {
+        this.weaponMount.x = this.x + this.w + 1;
+        this.weaponMount.y = this.y + this.h / 2;
     }
 }

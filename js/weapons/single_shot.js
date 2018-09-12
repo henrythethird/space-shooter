@@ -1,7 +1,9 @@
 class SingleShot {
-    constructor(parent) {
+    constructor(parent, mount) {
         this.parent = parent;
         this.shotCooldown = 0;
+        this.cooldown = settings.weapon.single.cooldown;
+        this.mount = mount;
     }
 
     update() {
@@ -11,12 +13,11 @@ class SingleShot {
     shoot() {
         if (this.shotCooldown > 0) return;
 
-        this.shotCooldown = settings.weapon.single.cooldown;
+        this.shotCooldown = this.cooldown;
+        const mount = this.mount;
 
-        const mount = this.parent.getWeaponMount();
-
-        spawner
-            .spawn(ENTITY_PROJECTILE, mount.x, mount.y)
-            .direction = mount.direction;
+        const entity = spawner.spawn(ENTITY_PROJECTILE, mount.x, mount.y);
+        entity.direction = mount.direction;
+        entity.evil = this.parent.evil;
     }
 }

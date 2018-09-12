@@ -18,10 +18,25 @@ class Enemy {
         this.explosionSound = resources.getAudio(SOUND_EXPLODE);
 
         this.health = settings.enemy.health;
+        this.weapon = null;
+
+        this.evil = true;
+
+        if (Math.random() > .5) {
+            this.weaponMount = new WeaponMount(0, 0, -1);
+            this.weapon = new SingleShot(this, this.weaponMount);
+            this.weapon.cooldown = 50;
+        }
     }
 
     update() {
         this.x -= settings.enemy.speed;
+
+        if (this.weapon) {
+            this.updateWeaponMount();
+            this.weapon.update();
+            this.weapon.shoot();
+        }
     }
 
     kill() {
@@ -74,5 +89,10 @@ class Enemy {
 
     getBoundingRect() {
         return new BoundingRect(this.x, this.y, this.w, this.h);
+    }
+
+    updateWeaponMount() {
+        this.weaponMount.x = this.x;
+        this.weaponMount.y = this.y + this.h / 2;
     }
 }

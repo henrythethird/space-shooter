@@ -6,6 +6,8 @@ class MainScreen extends Screen {
         this.bossMusic = resources.getAudio(MUSIC_BOSS_BATTLE);
 
         this.paused = false;
+        this.textbox = new Textbox(300, 400);
+    
     }
 
     start() {
@@ -30,15 +32,15 @@ class MainScreen extends Screen {
             this.audio.play();
         }
 
-        if (Math.random() > .985) {
-            spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
-            return;
-        }
-
         if (hud.score == 500) {
             this.boss = spawner.spawn(ENTITY_BOSS, settings.width, 100);
             this.bossMusic.play();
             this.audio.pause();
+        }
+
+        if (Math.random() > .985) {
+            spawner.spawn(ENTITY_ENEMY, settings.width, Math.random() * (settings.height - 100)  + 50);
+            return;
         }
     }
 
@@ -75,6 +77,7 @@ class MainScreen extends Screen {
 
             this.paused = true;
         }
+        this.textbox.draw();
     }
 
     stop() {

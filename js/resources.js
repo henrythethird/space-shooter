@@ -11,6 +11,8 @@ const IMAGE_HEART = "heart";
 const IMAGE_PROJECTILE = "projectile";
 const IMAGE_SHUTTLE = "shuttle";
 const IMAGE_BOSS = "boss";
+const IMAGE_TEXTBOX = "text_box";
+const IMAGE_PORTRAIT ="portrait";
 
 const SOUND_EXPLODE = "explode.ogg";
 const SOUND_GAME_OVER = "game_over.ogg";
@@ -57,7 +59,8 @@ const resources = {
             IMAGE_ASTEROIDS, IMAGE_EXPLOSION, 
             IMAGE_HEALTHPACK, IMAGE_HEART, 
             IMAGE_POWERUP, IMAGE_SHUTTLE,
-            IMAGE_PROJECTILE, IMAGE_BOSS
+            IMAGE_PROJECTILE, IMAGE_BOSS,
+            IMAGE_TEXTBOX, IMAGE_PORTRAIT
         ];
 
         images.forEach((image) => {

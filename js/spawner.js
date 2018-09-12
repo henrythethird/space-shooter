@@ -53,7 +53,7 @@ const spawner = {
             break;
         case ENTITY_POWERUP:
             entity = new Upgrade(x, y, resources.getImage(IMAGE_POWERUP), (powerup, player) => {
-                player.weapon = new DoubleShot(player);
+                player.weapon = new DoubleShot(player, player.weaponMount);
                 powerup.enabled = false;
             })
         }
