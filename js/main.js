@@ -39,6 +39,7 @@ function init() {
 function draw() {
     if (screens.current) {
         screens.current.run();
+        keyboard._keyup = {};
         return
     }
 

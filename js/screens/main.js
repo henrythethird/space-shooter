@@ -19,6 +19,10 @@ class MainScreen extends Screen {
     spawn() {
         super.spawn();
 
+        if (this.textbox.enabled) {
+            return;
+        }
+
         // If there is alread a boss spawned, stop spawning minions
         if (this.boss && this.boss.enabled) {
             return;
@@ -54,7 +58,13 @@ class MainScreen extends Screen {
 
         super.run();
 
-        hud.draw();
+        if (this.textbox.enabled) {
+            if (keyboard.isKeyUp(KEY_ENTER)) {
+                this.textbox.next();
+            }
+        } else {
+            hud.draw();
+        }
 
         if (hud.amount <= 0) {
             const audio = resources.getAudio(SOUND_GAME_OVER);

@@ -42,7 +42,7 @@ class Textbox {
                     line, this.x + 220, this.y + 60 + 25 * index, 
                     FONT_GAMEARCADE, "16px", "white", "left"
                 );
-            })
+            });
         
         drawer.drawText(
             "Press [Enter]", this.x + 530, this.y + 165, 

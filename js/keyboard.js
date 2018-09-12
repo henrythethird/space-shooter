@@ -5,12 +5,24 @@ const KEY_DOWN = 40;
 
 const KEY_SPACE = 32;
 const KEY_ESC = 27;
+const KEY_ENTER = 13;
 
 const keyboard = {
     _keys: {},
-    keydown(event) { keyboard._keys[String(event.keyCode)] = true },
-    keyup(event) { keyboard._keys[String(event.keyCode)] = false },
-    isPressed(keyCode) { return keyboard._keys[String(keyCode)] },
+    _keyup: {},
+    keydown(event) { 
+        keyboard._keys[String(event.keyCode)] = true;
+    },
+    keyup(event) { 
+        keyboard._keys[String(event.keyCode)] = false; 
+        keyboard._keyup[String(event.keyCode)] = true;
+    },
+    isPressed(keyCode) { 
+        return keyboard._keys[String(keyCode)];
+    },
+    isKeyUp(keyCode) {
+        return keyboard._keyup[String(keyCode)];
+    }
 };
 
 window.addEventListener('keydown', keyboard.keydown);
