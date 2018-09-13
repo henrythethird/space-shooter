@@ -49,6 +49,7 @@ const spawner = {
             entity = new Upgrade(x, y, resources.getImage(IMAGE_HEALTHPACK), (powerup, player) => {
                 player.health++;
                 powerup.enabled = false;
+                resources.playSound(SOUND_HEALTH);
             });
             break;
         case ENTITY_POWERUP:

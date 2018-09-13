@@ -20,6 +20,7 @@ const SOUND_GAME_OVER = "game_over.ogg";
 const SOUND_OUCH = "ouch.ogg";
 const SOUND_PROJECTILE = "projectile.ogg";
 const SOUND_POWERUP = "powerup.mp3";
+const SOUND_HEALTH = "health.ogg";
 
 const MUSIC_BACKGROUND = "background.mp3";
 const MUSIC_GAME_OVER = "game_over.mp3";
@@ -37,7 +38,7 @@ const resources = {
         const sounds = [
             SOUND_EXPLODE, SOUND_GAME_OVER, 
             SOUND_OUCH, SOUND_PROJECTILE,
-            SOUND_POWERUP,
+            SOUND_POWERUP, SOUND_HEALTH,
         ];
 
         sounds.forEach((sound) => {

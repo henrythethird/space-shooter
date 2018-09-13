@@ -64,12 +64,12 @@ class Enemy {
     drop() {
         if (!this.enableDrops) return;
 
-        if (Math.random() < .05) {
+        if (Math.random() < .5) {
             spawner.spawn(ENTITY_HEALTHPACK, this.x + 40, this.y + 40);
             return;
         }
 
-        if (Math.random() < .025) {
+        if (Math.random() < .25) {
             spawner.spawn(ENTITY_POWERUP, this.x + 40, this.y + 40);
             return;
         }

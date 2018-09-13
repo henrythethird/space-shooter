@@ -14,7 +14,7 @@ class Upgrade {
     }
     
     update() {
-        this.x -= settings.enemy.speed;
+        this.x -= settings.enemy.speed / 2;
     }
 
     draw() {

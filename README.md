@@ -3,6 +3,8 @@
 ![Title](screenshots/title.png?raw=true "Title")
 ## Intriguing Gameplay
 ![Game](screenshots/game.png?raw=true "Game")
+## Interesting Back Story
+![Story](screenshots/story.png?raw=true "Story")
 ## Magnificent Pause Screens
 ![Pause](screenshots/pause.png?raw=true "Pause")
 ## Epic Boss Battles
