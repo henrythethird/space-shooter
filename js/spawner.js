@@ -55,7 +55,8 @@ const spawner = {
             entity = new Upgrade(x, y, resources.getImage(IMAGE_POWERUP), (powerup, player) => {
                 player.weapon = new DoubleShot(player, player.weaponMount);
                 powerup.enabled = false;
-            })
+                resources.playSound(SOUND_POWERUP);
+            });
         }
 
         if (!entity) return;
